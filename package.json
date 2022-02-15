@@ -59,9 +59,8 @@
     "ts-node": "^9.0.0",
     "typescript": "^4.0.3"
   },
-  "dependencies": {},
   "optionalDependencies": {
-    "macos-export-certificate-and-key": "^1.1.0",
-    "win-export-certificate-and-key": "^1.1.0"
+    "macos-export-certificate-and-key": "^1.1.1",
+    "win-export-certificate-and-key": "^1.1.1"
   }
 }
