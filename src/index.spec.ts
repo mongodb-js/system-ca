@@ -13,7 +13,7 @@ function validateHasCertificate(certs: string[], serialNumber: string): void {
 const verisignRootCA = '401AC46421B31321030EBBE4121AC51D';
 
 describe('system-ca', function() {
-  this.timeout(20_000);
+  this.timeout(60_000);
 
   context('sync variant', () => {
     it('loads system certificates', () => {
