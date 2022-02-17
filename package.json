@@ -1,6 +1,6 @@
 {
   "name": "system-ca",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Access the system certificate store on Windows, macOS and Linux",
   "keywords": [
     "system",
