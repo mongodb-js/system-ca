@@ -1,4 +1,5 @@
 import fs from 'fs';
+import path from 'path';
 
 const DEFAULT_UNIX_CERT_FILES = [
   '/etc/ssl/certs/ca-certificates.crt',
@@ -27,7 +28,7 @@ function getUnixFiles(env: Record<string, string | undefined>): { files: string[
   }
 
   if (env.SSL_CERT_DIR) {
-    dirs = [env.SSL_CERT_DIR];
+    dirs = env.SSL_CERT_DIR.split(':');
   }
 
   return { files, dirs };
@@ -41,7 +42,7 @@ export function * unixSyncImpl(env: Record<string, string | undefined>): Iterabl
 
   for (const dir of dirs) {
     try {
-      allFiles.push(...fs.readdirSync(dir));
+      allFiles.push(...fs.readdirSync(dir).map(file => path.join(dir, file)));
     } catch (err_: any) {
       err ??= err_;
     }
@@ -72,7 +73,7 @@ export async function * unixAsyncImpl(env: Record<string, string | undefined>): 
 
   for (const dir of dirs) {
     try {
-      allFiles.push(...await fs.promises.readdir(dir));
+      allFiles.push(...(await fs.promises.readdir(dir)).map(file => path.join(dir, file)));
     } catch (err_: any) {
       err ??= err_;
     }
