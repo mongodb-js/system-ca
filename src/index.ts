@@ -1,7 +1,6 @@
 import { unixSyncImpl, unixAsyncImpl, windowsImpl, macosImpl } from './impl';
 import { rootCertificates } from 'tls';
 import { once } from 'events';
-import { Worker } from 'worker_threads';
 
 export interface Options {
   env?: Record<string, string | undefined>;
@@ -33,13 +32,13 @@ export function systemCertsSync(opts: Options = {}): string[] {
 export async function systemCertsAsync(opts: Options = {}): Promise<string[]> {
   let certs: Set<string>;
   if (process.platform === 'win32' || process.platform === 'darwin') {
-    const variant = process.platform === 'win32' ? 'windows' : 'macos';
     const script = `
     const { parentPort } = require('worker_threads');
-    const iterable = require(${JSON.stringify(require.resolve('./impl'))}).${variant}Impl();
+    const iterable = require(${JSON.stringify(__filename)}).systemCertsSync(${JSON.stringify(opts)});
     parentPort.postMessage(new Set(iterable));
     `;
     try {
+      const { Worker } = await import('worker_threads');
       const worker = new Worker(script, { eval: true });
       const [result] = await once(worker, 'message');
       certs = result;

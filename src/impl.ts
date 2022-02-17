@@ -97,14 +97,28 @@ export async function * unixAsyncImpl(env: Record<string, string | undefined>): 
 }
 
 export function * windowsImpl(): Iterable<string> {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const { exportSystemCertificates } = require('win-export-certificate-and-key');
+  let exportSystemCertificates;
+  // try/catch helps bundlers deal with optional dependencies
+  // eslint-disable-next-line no-useless-catch
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    ({ exportSystemCertificates } = require('win-export-certificate-and-key'));
+  } catch (err) {
+    throw err;
+  }
   yield * exportSystemCertificates({ store: 'ROOT' });
   yield * exportSystemCertificates({ store: 'CA' });
 }
 
 export function * macosImpl(): Iterable<string> {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const { exportSystemCertificates } = require('macos-export-certificate-and-key');
+  let exportSystemCertificates;
+  // try/catch helps bundlers deal with optional dependencies
+  // eslint-disable-next-line no-useless-catch
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    ({ exportSystemCertificates } = require('macos-export-certificate-and-key'));
+  } catch (err) {
+    throw err;
+  }
   yield * exportSystemCertificates();
 }
