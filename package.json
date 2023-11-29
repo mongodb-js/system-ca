@@ -20,9 +20,11 @@
     "url": "https://github.com/mongodb-js/system-ca/issues"
   },
   "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "exports": {
     "require": "./lib/index.js",
-    "import": "./.esm-wrapper.mjs"
+    "import": "./.esm-wrapper.mjs",
+    "types": "./lib/index.d.ts"
   },
   "files": [
     "LICENSE",
