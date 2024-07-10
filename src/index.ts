@@ -29,6 +29,9 @@ export function systemCertsSync(opts: Options = {}): string[] {
   return maybeAddNodeCertificates(certs, opts);
 }
 
+// eslint-disable-next-line camelcase
+declare const __webpack_require__: unknown;
+
 export async function systemCertsAsync(opts: Options = {}): Promise<string[]> {
   let certs: Set<string>;
   if (process.platform === 'win32' || process.platform === 'darwin') {
@@ -38,6 +41,11 @@ export async function systemCertsAsync(opts: Options = {}): Promise<string[]> {
     parentPort.postMessage(new Set(iterable));
     `;
     try {
+      // eslint-disable-next-line camelcase
+      if (typeof __webpack_require__ !== 'undefined') {
+        throw new Error('Not attempting to start worker thread from bundled application');
+      }
+
       const { Worker } = await import('worker_threads');
       const worker = new Worker(script, { eval: true });
       const [result] = await once(worker, 'message');
