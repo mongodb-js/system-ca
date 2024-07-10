@@ -3,14 +3,11 @@ import { X509Certificate } from 'crypto';
 import { systemCertsSync, systemCertsAsync, Options } from '../';
 
 function validateHasCertificate(certs: string[], serialNumber: string): void {
-  if (!X509Certificate) { // Only available on Node.js 15.6.0+
-    return;
-  }
   expect(certs.map(c => new X509Certificate(c).serialNumber))
     .to.include(serialNumber);
 }
 
-const verisignRootCA = '401AC46421B31321030EBBE4121AC51D';
+const microsoftRootCA = '1ED397095FD8B4B347701EAABE7F45B3';
 
 describe('system-ca', function() {
   this.timeout(60_000);
@@ -18,7 +15,7 @@ describe('system-ca', function() {
   context('sync variant', () => {
     it('loads system certificates', () => {
       const certs = systemCertsSync();
-      validateHasCertificate(certs, verisignRootCA);
+      validateHasCertificate(certs, microsoftRootCA);
     });
   });
 
@@ -26,7 +23,7 @@ describe('system-ca', function() {
     it('loads system certificates', async() => {
       const opts: Options = {};
       const certs = await systemCertsAsync(opts);
-      validateHasCertificate(certs, verisignRootCA);
+      validateHasCertificate(certs, microsoftRootCA);
       expect(opts.asyncFallbackError).to.equal(undefined);
     });
   });
