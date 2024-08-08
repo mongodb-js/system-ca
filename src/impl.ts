@@ -96,7 +96,7 @@ export async function * unixAsyncImpl(env: Record<string, string | undefined>): 
   }
 }
 
-export function * windowsImpl(): Iterable<string> {
+export function * windowsSyncImpl(): Iterable<string> {
   let exportSystemCertificates;
   // try/catch helps bundlers deal with optional dependencies
   // eslint-disable-next-line no-useless-catch
@@ -110,7 +110,21 @@ export function * windowsImpl(): Iterable<string> {
   yield * exportSystemCertificates({ store: 'CA' });
 }
 
-export function * macosImpl(): Iterable<string> {
+export async function * windowsAsyncImpl(): AsyncIterable<string> {
+  let exportSystemCertificatesAsync;
+  // try/catch helps bundlers deal with optional dependencies
+  // eslint-disable-next-line no-useless-catch
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    ({ exportSystemCertificatesAsync } = require('win-export-certificate-and-key'));
+  } catch (err) {
+    throw err;
+  }
+  yield * await exportSystemCertificatesAsync({ store: 'ROOT' });
+  yield * await exportSystemCertificatesAsync({ store: 'CA' });
+}
+
+export function * macosSyncImpl(): Iterable<string> {
   let exportSystemCertificates;
   // try/catch helps bundlers deal with optional dependencies
   // eslint-disable-next-line no-useless-catch
@@ -121,4 +135,17 @@ export function * macosImpl(): Iterable<string> {
     throw err;
   }
   yield * exportSystemCertificates();
+}
+
+export async function * macosAsyncImpl(): AsyncIterable<string> {
+  let exportSystemCertificatesAsync;
+  // try/catch helps bundlers deal with optional dependencies
+  // eslint-disable-next-line no-useless-catch
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    ({ exportSystemCertificatesAsync } = require('macos-export-certificate-and-key'));
+  } catch (err) {
+    throw err;
+  }
+  yield * await exportSystemCertificatesAsync();
 }
