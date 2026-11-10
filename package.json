@@ -62,7 +62,7 @@
     "typescript": "^4.0.3"
   },
   "optionalDependencies": {
-    "macos-export-certificate-and-key": "^2.0.1",
+    "@mongodb-js/macos-export-certificate-and-key": "^2.0.1",
     "win-export-certificate-and-key": "^3.0.2"
   }
 }

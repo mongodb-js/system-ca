@@ -130,7 +130,7 @@ export function * macosSyncImpl(): Iterable<string> {
   // eslint-disable-next-line no-useless-catch
   try {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    ({ exportSystemCertificates } = require('macos-export-certificate-and-key'));
+    ({ exportSystemCertificates } = require('@mongodb-js/macos-export-certificate-and-key'));
   } catch (err) {
     throw err;
   }
@@ -143,7 +143,7 @@ export async function * macosAsyncImpl(): AsyncIterable<string> {
   // eslint-disable-next-line no-useless-catch
   try {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    ({ exportSystemCertificatesAsync } = require('macos-export-certificate-and-key'));
+    ({ exportSystemCertificatesAsync } = require('@mongodb-js/macos-export-certificate-and-key'));
   } catch (err) {
     throw err;
   }
