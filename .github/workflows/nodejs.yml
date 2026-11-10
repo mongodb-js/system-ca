@@ -5,10 +5,13 @@ name: CI
 jobs:
   test:
     name: Test
+    # windows-latest is now Visual Studio 2026, which the node-gyp bundled with
+    # Node.js 20/22 does not recognise, so the optional win-export-certificate-and-key
+    # addon silently fails to build. Pin to windows-2022 (VS 2022) until it does.
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest, macos-latest, windows-2022]
         node-version: [20.x, 22.x, 24.x]
     runs-on: ${{matrix.os}}
     steps:
